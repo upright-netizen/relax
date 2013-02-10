@@ -1,5 +1,7 @@
 .ruler-wrapper {
   position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .ruler-wrapper .unit {
