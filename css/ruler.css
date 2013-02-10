@@ -1,0 +1,26 @@
+.ruler-wrapper {
+  position: absolute;
+}
+
+.ruler-wrapper .unit {
+  padding-top: 3px;
+  width: 100px;
+  position: absolute;
+  font-family: Helvetica, Arial, sans-serif;
+
+}
+
+.ruler-wrapper .small {
+  border-top: 1px solid #ccc;
+  font-size: 10px;
+}
+
+.ruler-wrapper .medium {
+  border-top: 2px solid #999;
+  font-size: 13px;
+}
+
+.ruler-wrapper .large {
+  border-top: 3px solid #000;
+  font-size: 16px;
+}
