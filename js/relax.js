@@ -1,9 +1,5 @@
 window.Relax = (function (global) {
-
-
   var Model = function (elem, xv, yv) {
-    console.log('Relax mon.. ', elem, xv, yv);
-
     this._elem = elem;
     this._xv = xv;
     this._yv = yv;
@@ -11,35 +7,26 @@ window.Relax = (function (global) {
     global.addEventListener('scroll', this, false);
   };
 
-  Model.prototype.windowHeight = function () {
-    return global.outerHeight;
-  };
-
-  Model.prototype.windowScrollY = function () {
-    return global.scrollY;
-  };
-
-  Model.prototype.documentHeight = function () {
-    return global.document.height;
-  };
-
   Model.prototype.isVisible = function() {
-    var eTop = this._elem.offsetTop,
-      wBottom = this.windowScrollY() + this.windowHeight();
+    var rect = this._elem.getBoundingClientRect();
 
-    if (eTop <= wBottom && eTop >= this.windowScrollY()) {
-      return true;
-    }
-
-    return false;
+    return (rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= window.innerHeight &&
+            rect.right <= window.innerWidth);
   };
 
+  /**
+   * Currently only handles the 'scroll' event
+   */
   Model.prototype.handleEvent = function (e) {
-    if (this.windowScrollY() < 0 || this.windowScrollY() > this.documentHeight()) {
+    if (global.scrollY < 0 || global.scrollY > global.document.height) {
       return;
     }
 
-    console.log('visible: ', this.isVisible());
+    if (this.isVisible()) {
+      console.log('visible!', this._elem);
+    }
   };
 
   return Model;
