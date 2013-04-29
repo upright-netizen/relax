@@ -21,12 +21,13 @@ window.Relax = (function (global) {
   };
 
   // TODO: calculate position based on formula not blind addition to current position.
+  // TODO: use transform() if available instead ot top and left.
   Model.prototype.move = function move () {
     var top = global.getComputedStyle(this._elem, null).top || "0px";
       left = global.getComputedStyle(this._elem, null).left || "0px";
 
-    top = parseInt(top.replace('px', ''));
-    left = parseInt(left.replace('px', ''));
+    top = parseInt(top.replace('px', ''), 10);
+    left = parseInt(left.replace('px', ''), 10);
 
     this._elem.style.top = top  + (this._yv * this._direction) + "px";
     this._elem.style.left = left  + (this._xv * this._direction) + "px";
@@ -38,7 +39,7 @@ window.Relax = (function (global) {
 
   Model.prototype.getDirection = function getDirection (currentPos) {
     return (currentPos - this._lastPos) >= 0 ? -1 : 1;
-  }
+  };
 
   /**
    * Currently only handles the 'scroll' event
