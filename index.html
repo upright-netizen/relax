@@ -9,6 +9,7 @@
 <body>
 
   <div id="one" class="one">ONE</div>
+  <div id="two" class="two">TWO</div>
 
   <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
   <script type="text/javascript" src="js/ruler.js"></script>
@@ -16,6 +17,7 @@
   <script>
     Ruler.generate(10500);
     var one = new Relax($('#one')[0], 0, 5);
+    var two = new Relax($('#two')[0], 0, 10);
   </script>
 </body>
 </html>

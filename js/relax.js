@@ -3,11 +3,13 @@ window.Relax = (function (global) {
     this._elem = elem;
     this._xv = xv;
     this._yv = yv;
+    this._lastPos = global.scrollY;
+    this._direction = 1;
 
     global.addEventListener('scroll', this, false);
-  }, lastPos = global.scrollY;
+  };
 
-  Model.prototype.isVisible = function () {
+  Model.prototype.isVisible = function isVisible () {
     var rect = this._elem.getBoundingClientRect();
 
     return (rect.top >= 0 &&
@@ -16,33 +18,31 @@ window.Relax = (function (global) {
             rect.right <= window.innerWidth);
   };
 
-  Model.prototype.move = function () {
+  Model.prototype.move = function move () {
     var top = global.getComputedStyle(this._elem, null).top || "0px";
 
     top = parseInt(top.replace('px', ''));
 
-    this._elem.style.top = top + this._yv + "px";
-    console.log('this._elem.style.top = ', top, this._yv, "px");
+    this._elem.style.top = top  + (this._yv * this._direction) + "px";
+    console.log("id: ", this._elem.id ,"lastPos: ", this._lastPos, "direction: ", this._direction);
+    // console.log(this._elem.id, 'this._elem.style.top = ', top, this._yv, "px", "direction: ", this._direction);
   };
 
-  function getDirection (currentPos) {
-    return (currentPos - lastPos) >= 0 ? -1 : 1;
+  Model.prototype.getDirection = function getDirection (currentPos) {
+    return (currentPos - this._lastPos) >= 0 ? -1 : 1;
   }
 
   /**
    * Currently only handles the 'scroll' event
    */
-  Model.prototype.handleEvent = function (e) {
+  Model.prototype.handleEvent = function handleEvent (e) {
     if (global.scrollY < 0 || global.scrollY > global.document.height) {
       return;
     }
-    this.direction = getDirection(global.scrollY);
-    lastPos = global.scrollY;
-
-    console.log(this.direction > 0 ? 'up' : 'down');
+    this._direction = this.getDirection(global.scrollY);
+    this._lastPos = global.scrollY;
 
     if (this.isVisible()) {
-      console.log('visible!', this._elem);
       this.move();
     }
   };
