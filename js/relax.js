@@ -10,21 +10,29 @@ window.Relax = (function (global) {
   };
 
   Model.prototype.isVisible = function isVisible () {
-    var rect = this._elem.getBoundingClientRect();
-
-    return (rect.top >= 0 &&
+    var rect = this._elem.getBoundingClientRect(),
+      top = rect.top + rect.height,
+      bottom = rect.bottom - rect.height;
+    // console.log("top: ", top, ", bottom: ", rect.bottom);
+    return (top >= 0 &&
             rect.left >= 0 &&
-            rect.bottom <= window.innerHeight &&
+            bottom <= window.innerHeight &&
             rect.right <= window.innerWidth);
   };
 
+  // TODO: calculate position based on formula not blind addition to current position.
   Model.prototype.move = function move () {
     var top = global.getComputedStyle(this._elem, null).top || "0px";
+      left = global.getComputedStyle(this._elem, null).left || "0px";
 
     top = parseInt(top.replace('px', ''));
+    left = parseInt(left.replace('px', ''));
 
     this._elem.style.top = top  + (this._yv * this._direction) + "px";
-    console.log("id: ", this._elem.id ,"lastPos: ", this._lastPos, "direction: ", this._direction);
+    this._elem.style.left = left  + (this._xv * this._direction) + "px";
+
+    // console.log('moving...');
+    // console.log("id: ", this._elem.id ,"lastPos: ", this._lastPos, "direction: ", this._direction);
     // console.log(this._elem.id, 'this._elem.style.top = ', top, this._yv, "px", "direction: ", this._direction);
   };
 
@@ -43,6 +51,7 @@ window.Relax = (function (global) {
     this._lastPos = global.scrollY;
 
     if (this.isVisible()) {
+      // console.log(this._elem.id, 'visible');
       this.move();
     }
   };
